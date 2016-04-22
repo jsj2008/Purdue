@@ -1,0 +1,136 @@
+package edu.purdue.krustagi;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import android.app.Fragment;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.Toast;
+
+/**
+ * This fragment is the "page" where the user inputs information about the
+ * request, he/she wishes to send.
+ *
+ * @author krustagi
+ */
+public class ClientFragment extends Fragment implements OnClickListener, OnItemSelectedListener {
+	
+	private Spinner spinner1, spinner2;
+	private EditText host;
+	private EditText port;
+	private SubmitCallbackListener activity;
+	/**
+	 * Creates a ProfileFragment
+	 * 
+	 * @param activity
+	 *            activity to notify once the user click on the submit Button.
+	 * 
+	 *            ** DO NOT CREATE A CONSTRUCTOR FOR MatchFragment **
+	 * 
+	 * @return the fragment initialized.
+	 */
+	// ** DO NOT CREATE A CONSTRUCTOR FOR ProfileFragment **
+	public static ClientFragment newInstance(SubmitCallbackListener activity) {
+		ClientFragment f = new ClientFragment();
+
+		f.activity = activity;
+		return f;
+	}
+
+	/**
+	 * Called when the fragment will be displayed.
+	 */
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		if (container == null) {
+			return null;
+		}
+
+		View view = inflater.inflate(R.layout.client_fragment_layout,
+				container, false);
+		
+
+		/**
+		 * Register this fragment to be the OnClickListener for the submit
+		 * Button.
+		 */
+		view.findViewById(R.id.bu_submit).setOnClickListener(this);
+
+		// TODO: import your Views from the layout here. See example in
+		// ServerFragment.
+		
+		//setContentView(R.layout.client_fragment_layout);
+		
+		spinner1 = (Spinner) view.findViewById(R.id.spinner1);
+		spinner1.setOnItemSelectedListener(new CustomOnItemSelectedListener());
+		
+
+		this.host = (EditText) view.findViewById(R.id.et_host);
+		this.port = (EditText) view.findViewById(R.id.et_port);
+		
+		return view;
+	}
+	  
+	
+	/**
+	 * Returns the host enter by the user or the default value if the user
+	 * didn't open the fragment.
+	 */
+	public String getHost(String defaultVal) {
+		return this.host != null ? host.getText().toString() : defaultVal;
+	}
+
+	/**
+	 * Returns the port enter by the user or the default value if the user
+	 * didn't open the fragment.
+	 */
+	public int getPort(int defaultVal) {
+		return this.port != null ? Integer.parseInt(port.getText().toString()) : defaultVal;
+	}
+
+	/**
+	 * Callback function for the OnClickListener interface.
+	 */
+	@Override
+	public void onClick(View v) {
+		this.activity.onSubmit();
+	}
+
+	@Override
+	public void onItemSelected(AdapterView<?> parent, View view, int position,
+			long id) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onNothingSelected(AdapterView<?> parent) {
+		// TODO Auto-generated method stub
+		
+	}
+}
+
+class CustomOnItemSelectedListener implements OnItemSelectedListener {
+	 
+	  public void onItemSelected(AdapterView<?> parent, View view, int pos,long id) {
+		Toast.makeText(parent.getContext(), 
+			"OnItemSelectedListener : " + parent.getItemAtPosition(pos).toString(),
+			Toast.LENGTH_SHORT).show();
+	  }
+	 
+	  @Override
+	  public void onNothingSelected(AdapterView<?> arg0) {
+		// TODO Auto-generated method stub
+	  }
+	 
+	}

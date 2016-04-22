@@ -1,0 +1,93 @@
+import java.util.HashMap;
+import java.util.Map;
+import java.io.*;
+import java.util.Scanner;
+import java.util.Set;
+
+public class Stats {
+    public static Map<String,Integer> wins() throws FileNotFoundException
+        
+        , IOException{
+        Map<String,Integer> map = new HashMap<String,Integer>();
+        String a;
+        BufferedReader br = new BufferedReader("0 Chan Stine Neilson Curtis Kennedy vs. Prelich Murphy Wilkes Gall Greenberg \n" +
+                                               "1 Partington Defranco Dole Glover Low vs. Cohen Mars Johnston Moss Robinson \n" +
+                                               "0 Dole Wentz Mccrickerd Philips Francois vs. Stone Segal Smith Greenberg Jones \n" +
+                                               "1 Morse Chan Glover Mango Kennedy vs. Murphy Tan Levi Park Moss \n" +
+                                               "0 Morse Neilson Sewall Curtis Low vs. Stone Francois Clarkson Robinson Jones \n" +
+                                               "1 Prelich Wiske Philips Green Mars vs. Smith Kim Defranco Miller Stone \n" +
+                                               "0 Dole Partington Stine Mango Kennedy vs. Tan Levi Johnston Miller Stone \n" +
+                                               "0 Defranco Wentz Neilson Glover Cohen vs. Green Wilkes Gall Greenberg Stone \n" +
+                                               "0 Prelich Slack Mccrickerd Cohen Segal vs. Clarkson Park Moss Jones Miller\n" +
+                                               "1 Chan Wiske Murphy Neilson Sewall vs. Low Johnston Wilkes Robinson Greenberg \n" +
+                                               "0 Partington Stine Mango Curtis Green vs. Mars Smith Park Moss Miller \n" +
+                                               "0 Dole Mccrickerd Glover Philips Francois vs. Tan Johnston Kim Robinson Miller \n" +
+                                               "1 Slack Wentz Chan Wiske Stine vs. Kennedy Segal Levi Gall Kim \n" +
+                                               "0 Slack Wentz Morse Sewall Curtis vs. Murphy Mars Clarkson Levi Park \n" +
+                                               "1 Prelich Partington Slack Morse Francois vs. Tan Clarkson Johnston Wilkes Gall \n" +
+                                               "1 Defranco Mccrickerd Wiske Sewall Mango vs. Philips Low Cohen Segal Green \n");
+        boolean flag = false;
+        while((a = br.readLine()) != null) {
+            Scanner s = new Scanner(a);
+            int i = 0;
+            if (a.charAt(0) == '0') {
+                while(s.hasNext()) {
+                    String ab = s.next();
+                    if (s.equals("vs.")) break;
+                    Integer count = map.get(ab);
+                    if (count == null)
+                    {
+                        map.put(ab, 1);
+                        
+                    }
+                    else {
+                        map.put(a, ++count);
+                    }      
+                }
+            }
+            else {
+                while(s.hasNext()) {
+                    if (s.equals("vs.")) {
+                        flag = true;
+                        continue;
+                    } 
+                    if(flag == true) {
+                        String ab = s.next();
+                        Integer count = map.get(ab);
+                        if (count == null)
+                        {
+                            map.put(ab, 1);                            
+                        }
+                        else {
+                            map.put(a, ++count);
+                        } 
+                        flag = true;
+                    }
+                }
+            }
+        }
+        return map;
+    }
+
+    public static String winner() throws FileNotFoundException, IOException{
+        int max = 0;
+        String b = "";
+        Map<String,Integer> map = wins();
+        for (Map.Entry<String, Integer> entry : map.entrySet()) {
+            String key = entry.getKey();
+            Integer value = entry.getValue();   
+            if (value > max) {
+                max = value;
+                b = key;
+            }
+        }
+        System.out.println(b);
+        return b;
+    }
+    public static void main(String[] args) throws FileNotFoundException, IOException{
+        System.out.println(winner());
+    }
+}
+        
+    
+    

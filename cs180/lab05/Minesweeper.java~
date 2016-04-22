@@ -1,0 +1,147 @@
+import java.util.Random;
+import java.util.Scanner;
+
+public class Minesweeper {
+    
+    private boolean[][] minefield; 
+    private int[][] clueGrid; 
+    private boolean[][] checked; 
+    private int rows;
+    private int columns;
+    
+    public Minesweeper(int rows, int columns, int mines) {
+        minefield = new boolean[rows][columns]; 
+        clueGrid = new int[rows][columns];
+        checked = new boolean[rows][columns];
+        this.rows = rows;
+        this.columns = columns;
+        
+        generateMinefield(mines);   
+        generateClueGrid(); 
+        
+        for (int i = 0; i < checked.length; i++) 
+            for (int j = 0; j < checked[i].length; j++)
+            checked[i][j] = false; 
+    }
+    
+    private void generateMinefield(int mines) {
+        
+        for (int i = 0; i < minefield.length; i++) // minefield.length refers to the slots on the minefield
+            for (int j = 0; j < minefield[i].length; j++)
+            minefield[i][j] = false; // again seting all boxes to false as in the beginning there are no mines
+        
+        Random random = new Random(System.currentTimeMillis()); //Declaring and initializing a RNG, seed value is any long value,
+        
+        // placing mines
+        while (mines > 0) { // use a while loop, to continue placing mines, until they are all placed
+            int r = random.nextInt(minefield.length); // randomly select a row coordinate for the mine on the minefield
+            int c = random.nextInt(minefield[r].length); // randomly select a  column coordinate for the mine on the minefield
+            if (minefield[r][c]) // before placing the  mine, check to see if the coorodinate on the minefield is at position [r][c],
+                continue;// stop executing this loop, and go on to the next itteration
+            minefield[r][c] = true; // place the mine by changing the false to a true 
+            
+            mines--; // now that the first mine has been placed, decrease the number of additional mines to place by 1
+        }
+    }
+    
+    
+    private void generateClueGrid() {
+        for (int i = 0; i < rows; i++) // position on grid
+            for (int j = 0; j < columns; j++) // position on grid
+            clueGrid[i][j] = minefield[i][j] ? -1 : countMines(i,j); 
+// boolean expression(is there a mine at [i][j])? if true (return -1); if false (call method countmines(i, j))
+        
+    }
+    private int countMines(int row, int column) {
+        int n = 0;
+        for (int i = Math.max(row-1,0); i <= Math.min(row+1,rows-1); i++)
+            for (int j = Math.max(column-1,0); j <= Math.min(column+1,columns-1); j++)
+            if (!(i == row && j == column))
+            n += minefield[i][j] ? 1 : 0;
+        return n;
+    }
+    
+    private void printBoard() {
+        
+        // first print column numbers
+        System.out.print("   "); 
+        for (int j = 0; j < columns; j++)
+            System.out.print(" " + (j+1)); // for each column assign a number +1 to columns
+        System.out.println(); // print a newline
+        
+        System.out.print("  +-");
+        for (int j = 0; j < columns; j++) // for each column
+            System.out.print("--"); // 2 dashes
+        System.out.println(); // print newline
+        
+        
+        // now print row letters and board cells
+        char row_letter = 'A'; //assign the first row the letter A
+        for (int i = 0; i < rows; i++) { 
+            System.out.print(row_letter + " |"); // //for each row assign a letter +1 to row , then seperate the rows with 1 space, vertical pipe
+            
+            for (int j = 0; j < columns; j++) { // for each cell in the row
+                char cell_symbol;
+                if (!checked[i][j]) // if the cell is unchecked 
+                    cell_symbol = '?';
+                else if (minefield[i][j]) // if the cell is a mine
+                    cell_symbol = '*';
+                else if (clueGrid[i][j] > 0) // positive clue
+                    cell_symbol = (char)('0' + clueGrid[i][j]);
+                else  // ???? ask
+                    cell_symbol = ' ';
+                
+                System.out.print(" " + cell_symbol);  // l
+            }
+
+            System.out.println(); // print newline
+            row_letter++;
+        }
+    }
+    
+    public void start() {
+        Scanner scanner = new Scanner(System.in);
+        boolean win = false; // the game has just begun
+        while (!win) {
+            // as long as the play has not won, show board to user
+            printBoard();
+            
+            System.out.print("Check cell? ");
+            // get input from user
+            String line = scanner.nextLine().toUpperCase();//ask??
+            int row = line.charAt(0)-'A';
+            int column = line.charAt(1)-'1';
+            // check the cell
+            if (minefield[row][column]) // if the player checks a mine coordinate, game over, loss
+                break;// break out of the loop
+            else // as long as the play does not click a mine, game continues 
+                // mark cell as checked
+                checked[row][column] = true; // if the player identifies the mine as a mine 
+            // if all unchecked cells are mines, game is won
+            win = true;
+            for (int i = 0 ; i < rows && win; i++)
+                for (int j = 0; j < columns && win; j++)
+                if (!checked[i][j] && !minefield[i][j])
+                win = false; // unchecked cell is not a mine
+        }
+        // game is over
+        scanner.close(); // close the scanner
+        // set all cells to checked
+        for (int i = 0 ; i < rows; i++)
+            for (int j = 0; j < columns; j++)
+            checked[i][j] = true;
+        // show board to user
+        printBoard();
+        if (win) // congratulate user on success
+            System.out.println("\nYou win!");
+        else // scold or console user for loss
+            System.out.println("\nYou're not very good at this are you?");
+    }
+    
+    public static void main(String[] args) {
+        
+        Minesweeper m = new Minesweeper(5,5,1);
+        m.start();
+    }
+    
+}

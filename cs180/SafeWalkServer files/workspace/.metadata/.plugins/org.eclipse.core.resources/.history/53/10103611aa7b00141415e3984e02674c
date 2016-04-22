@@ -1,0 +1,159 @@
+<RelativeLayout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:android1="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/lg"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="edu.purdue.krustagi.MainActivity" >
+
+    <!-- TODO your layout here -->
+
+    <EditText
+        android:id="@+id/editText1"
+        android:layout_width="450px"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="113dp"
+        android:ems="10"
+        android:inputType="textPersonName" >
+
+        <requestFocus />
+    </EditText>
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/radioGroup1"
+        android:layout_below="@+id/editText1"
+        android:layout_marginLeft="73dp"
+        android:layout_marginTop="22dp"
+        android:text="Preferences:"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android1:fontFamily="sans-serif-light"
+        android:textColor="#FFFFFF"
+        android:textSize="32px" />
+
+    <TextView
+        android1:id="@+id/textView1"
+        android1:layout_width="wrap_content"
+        android1:layout_height="wrap_content"
+        android1:layout_alignBaseline="@+id/editText1"
+        android1:layout_alignBottom="@+id/editText1"
+        android1:fontFamily="sans-serif-light"
+        android1:text="Name :"
+        android1:textAppearance="?android:attr/textAppearanceLarge"
+        android1:textColor="#FFFFFF"
+        android1:textSize="30px" />
+
+    <Spinner
+        android1:id="@+id/spinner1"
+        android1:layout_width="wrap_content"
+        android1:layout_height="wrap_content"
+        android1:layout_below="@+id/radioGroup1"
+        android1:layout_centerHorizontal="true"
+        android:entries="@array/From"
+        android1:layout_marginTop="54dp" />
+
+    <Button
+        android1:id="@+id/bu_submit"
+        android1:layout_width="180px"
+        android1:layout_height="85px"
+        android1:layout_alignParentBottom="true"
+        android1:layout_centerHorizontal="true"
+        android1:background="@color/salmon"
+        android1:enabled="true"
+        android1:gravity="center"
+        android1:minHeight="60dp"
+        android1:minWidth="150dp"
+        android1:onClick="onSubmit"
+        android1:padding="@dimen/padding"
+        android1:text="@string/submit"
+        android1:textColor="@color/white" />
+
+    <Spinner
+        android1:id="@+id/spinner2"
+        android1:layout_width="wrap_content"
+        android1:layout_height="wrap_content"
+        android1:layout_alignLeft="@+id/spinner1"
+        android1:layout_below="@+id/spinner1"
+        android:entries="@array/From"
+        android1:layout_marginTop="38dp" />
+
+    <TextView
+        android1:id="@+id/textView3"
+        android1:layout_width="wrap_content"
+        android1:layout_height="wrap_content"
+        android1:layout_alignLeft="@+id/spinner1"
+        android1:layout_below="@+id/radioGroup1"
+        android1:layout_marginTop="24dp"
+        android:textSize="30px"
+        android1:textColor="#FFFFFF"
+        android1:text="From:"
+        android1:fontFamily="sans-serif-light"
+        android1:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android1:id="@+id/textView4"
+        android1:layout_width="wrap_content"
+        android1:layout_height="wrap_content"
+        android1:layout_alignLeft="@+id/spinner1"
+        android1:layout_below="@+id/spinner1"
+        android1:text="To:"
+        android:textSize="30px"
+        android1:textColor="#FFFFFF"
+        android1:fontFamily="sans-serif-light"
+        android1:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <ImageView
+        android1:id="@+id/imageView2"
+        android1:layout_width="wrap_content"
+        android1:layout_height="wrap_content"
+        android1:layout_alignParentTop="true"
+        android1:layout_centerHorizontal="true"
+        android1:layout_marginTop="29dp"
+        android1:src="@drawable/ic_launcher" />
+
+    <RadioGroup
+        android1:id="@+id/radioGroup1"
+        android1:layout_width="wrap_content"
+        android1:layout_height="wrap_content"
+        android1:layout_below="@+id/textView2" >
+
+        <RadioButton
+            android1:id="@+id/radio0"
+            android1:layout_width="match_parent"
+            android1:layout_height="wrap_content"
+            android1:layout_below="@+id/radioGroup1"
+            android1:layout_marginTop="33dp"
+            android1:checked="true"
+            android1:fontFamily="sans-serif-light"
+            android1:text="I am a requester. Match me with volunteers only."
+            android1:textColor="#FFFFFF"
+            android1:textSize="25px" />
+
+        <RadioButton
+            android1:id="@+id/radio1"
+            android1:layout_width="match_parent"
+            android1:layout_height="wrap_content"
+            android1:fontFamily="sans-serif-light"
+            android1:text="I am a volunteer. Don&apos;t match me with any other volunteer."
+            android1:textColor="#FFFFFF"
+            android1:textSize="25px" />
+
+        <RadioButton
+            android1:id="@+id/radio2"
+            android1:layout_width="match_parent"
+            android1:layout_height="wrap_content"
+            android1:fontFamily="sans-serif-light"
+            android1:text="I have no preference in being a requester or a volunteer."
+            android1:textColor="#FFFFFF"
+            android1:textSize="25px" />
+    </RadioGroup>
+
+</RelativeLayout>

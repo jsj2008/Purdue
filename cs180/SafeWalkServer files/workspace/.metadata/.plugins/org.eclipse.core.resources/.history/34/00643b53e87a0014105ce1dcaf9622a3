@@ -1,0 +1,132 @@
+<RelativeLayout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:android1="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/lg"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:textColor="#FFFFFF"
+    tools:context="edu.purdue.krustagi.MainActivity" >
+
+    <!-- TODO your layout here -->
+
+    <Spinner
+        android:id="@+id/spinner2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/spinner1"
+        android:layout_alignStart="@+id/spinner1"
+        android:layout_centerVertical="true"
+        android:entries="@array/To"
+        android:textColor="#FFFFFF" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/spinner2"
+        android:layout_alignLeft="@+id/spinner2"
+        android:layout_alignStart="@+id/spinner2"
+        android:layout_marginLeft="15dp"
+        android:layout_marginStart="15dp"
+        android:text="Medium Text"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="#FFFFFF" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/textView2"
+        android:layout_alignLeft="@+id/textView2"
+        android:layout_below="@+id/spinner2"
+        android:text="Medium Text"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="#FFFFFF" />
+
+    <RadioGroup
+        android1:id="@+id/radioGroup1"
+        android1:layout_width="wrap_content"
+        android1:layout_height="wrap_content"
+        android1:layout_above="@+id/textView2"
+        android1:layout_alignStart="@+id/textView1"
+        android1:layout_alignLeft="@+id/textView1" >
+
+        <RadioButton
+            android1:id="@+id/radio0"
+            android1:layout_width="wrap_content"
+            android1:layout_height="wrap_content"
+            android1:checked="true"
+            android1:text="RadioButton" />
+
+        <RadioButton
+            android1:id="@+id/radio1"
+            android1:layout_width="wrap_content"
+            android1:layout_height="wrap_content"
+            android1:text="RadioButton" />
+
+        <RadioButton
+            android1:id="@+id/radio2"
+            android1:layout_width="wrap_content"
+            android1:layout_height="wrap_content"
+            android1:text="RadioButton" />
+    </RadioGroup>
+
+    <TextView
+        android1:id="@+id/textView1"
+        android1:layout_width="wrap_content"
+        android1:layout_height="wrap_content"
+        android1:layout_alignParentTop="true"
+        android1:layout_alignRight="@+id/textView2"
+        android1:layout_alignStart="@+id/spinner2"
+        android1:layout_alignLeft="@+id/spinner2"
+        android1:layout_marginTop="100dp"
+        android1:text="Name"
+        android1:textAppearance="?android:attr/textAppearanceMedium"
+        android1:textColor="#FFFFFF" />
+
+    <Spinner
+        android1:id="@+id/spinner1"
+        android1:layout_width="match_parent"
+        android1:layout_height="wrap_content"
+        android1:layout_above="@+id/bu_submit"
+        android1:layout_centerHorizontal="true"
+        android1:layout_marginBottom="41dp"
+        android1:entries="@array/From"
+        android1:textColor="#FFFFFF" />
+
+    <Button
+        android1:id="@+id/bu_submit"
+        android1:layout_width="wrap_content"
+        android1:layout_height="wrap_content"
+        android1:layout_alignParentBottom="true"
+        android1:layout_centerHorizontal="true"
+        android1:layout_marginBottom="38dp"
+        android1:enabled="true"
+        android1:gravity="center"
+        android1:minHeight="60dp"
+        android1:minWidth="100dp"
+        android1:onClick="onSubmit"
+        android1:padding="@dimen/padding"
+        android1:text="@string/submit"
+        android1:textColor="#FFFFFF" />
+
+    <EditText
+        android1:id="@+id/editText1"
+        android1:layout_width="wrap_content"
+        android1:layout_height="wrap_content"
+        android1:layout_alignBaseline="@+id/textView1"
+        android1:layout_alignBottom="@+id/textView1"
+        android1:layout_alignEnd="@+id/spinner2"
+        android1:layout_toRightOf="@+id/textView1"
+        android1:ems="10"
+        android1:inputType="textPersonName"
+        android1:textColor="#FFFFFF" >
+
+        <requestFocus />
+    </EditText>
+
+</RelativeLayout>

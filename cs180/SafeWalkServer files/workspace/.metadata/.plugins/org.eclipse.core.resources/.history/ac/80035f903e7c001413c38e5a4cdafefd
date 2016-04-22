@@ -1,0 +1,305 @@
+package edu.purdue.krustagi;
+
+import android.annotation.SuppressLint;
+import android.app.ActionBar;
+import android.app.*;
+import android.content.*;
+import android.app.FragmentTransaction;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
+
+public class MainActivity extends Activity implements SubmitCallbackListener,
+		StartOverCallbackListener {
+	
+	final Context context = this;
+
+	/**
+	 * The ClientFragment used by the activity.
+	 */
+	private ClientFragment clientFragment;
+
+	/**
+	 * The ServerFragment used by the activity.
+	 */
+	private ServerFragment serverFragment;
+
+	/**
+	 * UI component of the ActionBar used for navigation.
+	 */
+	private Button left;
+	private Button right;
+	private TextView title;
+
+	/**
+	 * Called once the activity is created.
+	 */
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_main_layout);
+
+		this.clientFragment = ClientFragment.newInstance(this);
+		this.serverFragment = ServerFragment.newInstance();
+
+		FragmentTransaction ft = getFragmentManager().beginTransaction();
+		ft.add(R.id.fl_main, this.clientFragment);
+		ft.commit();
+	}
+
+	/**
+	 * Creates the ActionBar: - Inflates the layout - Extracts the components
+	 */
+	@SuppressLint("InflateParams")
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		final ViewGroup actionBarLayout = (ViewGroup) getLayoutInflater()
+				.inflate(R.layout.action_bar, null);
+
+		// Set up the ActionBar
+		final ActionBar actionBar = getActionBar();
+		actionBar.setDisplayShowHomeEnabled(false);
+		actionBar.setDisplayShowTitleEnabled(false);
+		actionBar.setDisplayShowCustomEnabled(true);
+		actionBar.setCustomView(actionBarLayout);
+
+		// Extract the UI component.
+		this.title = (TextView) actionBarLayout.findViewById(R.id.tv_title);
+		this.left = (Button) actionBarLayout.findViewById(R.id.bu_left);
+		this.right = (Button) actionBarLayout.findViewById(R.id.bu_right);
+		this.right.setVisibility(View.INVISIBLE);
+
+		return true;
+	}
+
+	/**
+	 * Callback function called when the user click on the right button of the
+	 * ActionBar.
+	 * 
+	 * @param v
+	 */
+	public void onRightClick(View v) {
+		FragmentTransaction ft = getFragmentManager().beginTransaction();
+
+		this.title.setText(this.getResources().getString(R.string.client));
+		this.left.setVisibility(View.VISIBLE);
+		this.right.setVisibility(View.INVISIBLE);
+		ft.replace(R.id.fl_main, this.clientFragment);
+		ft.commit();
+	}
+
+	/**
+	 * Callback function called when the user click on the left button of the
+	 * ActionBar.
+	 * 
+	 * @param v
+	 */
+	public void onLeftClick(View v) {
+		FragmentTransaction ft = getFragmentManager().beginTransaction();
+
+		this.title.setText(this.getResources().getString(R.string.server));
+		this.left.setVisibility(View.INVISIBLE);
+		this.right.setVisibility(View.VISIBLE);
+		ft.replace(R.id.fl_main, this.serverFragment);
+		ft.commit();
+
+	}
+
+	/**
+	 * Callback function called when the user click on the submit button.
+	 */
+	String arr[] = new String[]{"CL50","EE","LWSN","PMU","PUSH"};
+	boolean flag = true;
+	int err;
+	String str = "";
+	@Override
+	public void onSubmit() {
+		// TODO: Get client info via client fragment
+		String name = this.clientFragment.getName();
+		System.out.println(name);
+		int type = this.clientFragment.getType();
+		String to = this.clientFragment.getTo();
+		String from = this.clientFragment.getFrom();
+		// Server info
+		String host = this.serverFragment.getHost(getResources().getString(
+				R.string.default_host));
+		int port = this.serverFragment.getPort(Integer.parseInt(getResources()
+				.getString(R.string.default_port)));
+		// TODO: sanity check the results of the previous two dialogs
+		
+		//CLIENT
+		if (name.equals("NAME")) {
+			for (int i = 0; i < name.length(); i ++){
+				String st = name.charAt(i) + "";
+				if (st.equals(",")) {
+					err = 0;
+					flag = false;
+				}
+				if (name.length() == 0) {
+					err = 1;
+					flag = false;
+				}
+			}
+		}
+		else if (type != 0 && type != 1 && type != 2) {
+			err = 2;
+			flag = false;
+			}
+			
+		else if (from.equals("FROM")) {
+			str = from;
+			int c = 0;
+			for (int i = 0; i < arr.length; i ++) {
+				if (from.equals(arr[i])) {
+					c ++;
+					continue;
+				}
+			}
+			if (c == 0) {
+				err = 3;
+				flag = false;
+			}
+			if (from.equals("*")) {
+				if (type == 2)
+					flag = true;
+				else  {
+					err = 4;
+					flag = false;
+				}
+			}
+		}
+		else if (to.equals("TO")) {
+			String st = to;
+			int c = 0;
+			for (int i = 0; i < arr.length; i ++) {
+				if (to.equals(arr[i])) {
+					c ++;
+					continue;
+				}
+			}
+			if (c == 0) {
+				err = 5;
+				flag = false;
+			}
+			if (st.equals(str)) {
+				err = 6;
+				flag = false;
+			}
+		}
+		
+		//SERVER
+				if (host.length() == 0) {
+					err = 7;
+					flag = false;
+				}
+				for (int i = 0; i < host.length(); i ++) {
+					String str3 = host.charAt(i) + "";
+					if (str3.equals(" ")) {
+						err = 8;
+						flag = false;
+					}
+				}
+				if (port < 1 && port > 65535) {
+					err = 9;
+					flag = false;
+				}
+
+		// TODO: Need to get command from client fragment
+					
+		String command = this.getResources()
+				.getString(R.string.default_command);
+
+		FragmentTransaction ft = getFragmentManager().beginTransaction();
+
+		this.title.setText(getResources().getString(R.string.match));
+		this.left.setVisibility(View.INVISIBLE);
+		this.right.setVisibility(View.INVISIBLE);
+
+		// TODO: You may want additional parameters here if you tailor
+		// the match fragment
+		MatchFragment frag = MatchFragment.newInstance(this, host, port,
+				command);
+
+		ft.replace(R.id.fl_main, frag);
+		ft.commit();
+	}
+	Dialog dialog;
+	public void Error() {
+		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+				context);
+ 
+			// set title
+			alertDialogBuilder.setTitle("Your Title");
+ 
+			// set dialog message
+			if (err == 0)
+				alertDialogBuilder
+				.setMessage("Name shouldn't have a comma!");
+			else if ( err == 1)
+			alertDialogBuilder
+				.setMessage("Name shouldn0't be empty!");
+			else if (err == 2)
+				alertDialogBuilder
+				.setMessage("Type must be 0 or 1 or 2!");
+			else if (err == 3)
+				alertDialogBuilder
+				.setMessage("From must be a defined location!");
+			else if (err == 4)
+				alertDialogBuilder
+				.setMessage("If From is *, type must be 2!");
+			else if (err == 5)
+				alertDialogBuilder
+				.setMessage("To must be a defined location!");
+			else if (err == 6)
+				alertDialogBuilder
+				.setMessage("To cannot be the same as From!");
+			else if (err == 7)
+				alertDialogBuilder
+				.setMessage("Must not be empty!");
+			else if (err == 8)
+				alertDialogBuilder
+				.setMessage("Must not have a space!");
+			else if (err == 9)
+				alertDialogBuilder
+				.setMessage("Must be an integer value of range [1, 65535]!");
+			alertDialogBuilder	
+				.setCancelable(false)
+				.setPositiveButton("Yes",new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog,int id) {
+						// if this button is clicked, close
+						// current activity
+						MainActivity.this.finish();
+					}
+				  });
+			dialog.dismiss();
+			alertDialogBuilder
+				.setNegativeButton("No",new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog,int id) {
+						// if this button is clicked, just close
+						// the dialog box and do nothing
+						dialog.cancel();
+					}
+				});
+ 
+				// create alert dialog
+				AlertDialog alertDialog = alertDialogBuilder.create();
+ 
+				// show it
+				alertDialog.show();
+	}
+
+	/**
+	 * Callback function call from MatchFragment when the user want to create a
+	 * new request.
+	 */
+	@Override
+	public void onStartOver() {
+		onRightClick(null);
+	}
+	
+
+}
