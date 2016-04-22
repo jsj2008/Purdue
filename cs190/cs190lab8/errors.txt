@@ -1,0 +1,6 @@
+Hello,
+Welcome to Vim.
+
+This lab is about vim.
+I hope the lab is educational.
+It should also be fun!
